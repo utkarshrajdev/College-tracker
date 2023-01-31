@@ -1,0 +1,110 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show Colleges</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/index.css' %}"  />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="{% static 'js/c.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".btn").click(function () {
+        var q = $(".qq").val();
+        var w = $(".ww").val();
+        alert(q + w);
+      })
+    });
+  </script>
+  
+</head>
+
+<body>
+  <nav class="navbar">
+
+    <!-- LOGO -->
+
+    <div class="logo">
+      <img src="https://priyankgupta.co.in/wp-content/uploads/2020/05/logo-100px.jpg" alt="logo">
+    </div>
+
+    <!-- Navigation Bar -->
+
+    <ul class="nav-links">
+
+      <!-- Navigation Menu -->
+
+      <div class="menu">
+
+        <li><a href="/">Home</a></li>
+
+        <li class="services">
+
+          <a href="/">Services</a>
+
+          <!-- Dropdown Menu -->
+
+          <ul class="dropdown">
+
+            <li><a href="/"> Dropdown 1 </a></li>
+
+            <li><a href="/"> Dropdown 2 </a></li>
+
+            <li><a href="/"> Dropdown 2 </a></li>
+
+            <li><a href="/"> Dropdown 3 </a></li>
+
+            <li><a href="/"> Dropdown 4 </a></li>
+
+          </ul>
+
+        </li>
+
+        <li><a href="/">Contact</a></li>
+
+        <li><a href="/">About</a></li>
+
+      </div>
+
+    </ul>
+
+  </nav>
+  <div class="formcity">
+
+    <div class="wrapper">
+
+      <h2>Choose Your State and City</h2>
+
+      <select onchange="print_city('state',this.selectedIndex)" id="s" required class="qq"></select>
+      <select id="state" required class="ww"></select>
+
+      <script>
+        print_state("s");
+      </script>
+
+      <button class="btn">Submit</button>
+
+    </div>
+
+  </div>
+
+  <table border = "1">
+    <tr>
+      <th>College Name</th>
+      <th>City</th>
+    </tr>
+    {% for c in colleges %}
+    <tr>
+      <td>{{c.name}}</td>
+      <td>{{c.city}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+
+</html>

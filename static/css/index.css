@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #AEB6BF;
+    height: 100vh;
+    width: 100%;
+    /* display: flex; */
+    margin: auto;
+    /* justify-content: center;
+    align-items: center; */
+}
+
+.formcity {
+    padding: 10px;
+    background-color: #C0C0C0;
+    height: fit-content;
+    width: fit-content;
+    margin: auto;
+}
+
+.wrapper {
+
+    padding: 20px;
+    background: white;
+    border-radius: 3px;
+}
+
+select,
+option {
+    padding: 10px;
+    border-radius: 3px;
+    border: none;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    background: lightgrey;
+}
+
+.navbar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 20px;
+
+    background-color: #2E4053;
+
+    color: #fff;
+
+}
+
+.nav-links a {
+
+    color: #fff;
+
+}
+
+
+.logo {
+
+    font-size: 32px;
+
+}
+
+
+.menu {
+
+    display: flex;
+
+    gap: 1em;
+
+    font-size: 18px;
+
+}
+
+.menu li:hover {
+
+    background-color: #4c9e9e;
+
+    border-radius: 5px;
+
+    transition: 0.3s ease;
+
+}
+
+.menu li {
+
+    padding: 5px 14px;
+
+}
+
+.services {
+
+    position: relative;
+
+}
+
+.dropdown {
+
+    background-color: rgb(93, 114, 114);
+
+    /* padding: 1em 0; */
+
+    position: absolute;
+
+    display: none;
+
+    border-radius: 8px;
+
+    top: 35px;
+
+}
+
+.dropdown li+li {
+
+    margin-top: 10px;
+
+}
+
+.dropdown li {
+
+    padding: 0.5em 1em;
+
+    width: 8em;
+
+    text-align: center;
+
+}
+
+.dropdown li:hover {
+
+    background-color: #4c9e9e;
+
+}
+
+.services:hover .dropdown {
+
+    display: block;
+
+}
