@@ -13,7 +13,11 @@ class City(models.Model):
 
 class College(models.Model):
     name = models.CharField(max_length=100,null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE,null=True)
+    city = models.CharField(max_length=100,null=True)
+    state = models.CharField(max_length=100,null=True)
+    phone = models.CharField(max_length=100,null=True)
+    email = models.CharField(max_length=100,null=True)
+    website = models.URLField(max_length=100,null=True)
     def __str__(self) :
         return self.name
     

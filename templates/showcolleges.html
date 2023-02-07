@@ -96,12 +96,16 @@
   <table border = "1">
     <tr>
       <th>College Name</th>
-      <th>City</th>
+      <th>Phone</th>
+      <th>E-Mail</th>
+      <th>Website</th>
     </tr>
     {% for c in colleges %}
     <tr>
       <td>{{c.name}}</td>
-      <td>{{c.city}}</td>
+      <td>{{c.phone}}</td>
+      <td>{{c.email}}</td>
+      <td>{{c.website}}</td>
     </tr>
     {% endfor %}
   </table>

@@ -87,3 +87,27 @@ def savecollege() :
             ins = College(name=name, city=City.objects.get(city=cities[i]))
             ins.save()
 
+
+def studyguide() :
+    import requests
+    from bs4 import BeautifulSoup
+
+    URL = "http://www.studyguideindia.com/Colleges/default.asp?Course=B-Tech-Colleges"
+    page = requests.get(URL)
+
+    soup = BeautifulSoup(page.content, "html.parser")
+
+    format = soup.prettify
+
+    title=soup.title
+    global colleges, cities, states
+    colleges = []
+    cities = []
+    states = []
+
+    images = soup.find_all('img')
+    allsrc = []
+    for src in images:
+        src = src.get('src')
+        allsrc.append(src)
+        print(src)

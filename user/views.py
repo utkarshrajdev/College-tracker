@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .scrap import *
+from .studyguide import *
 from .models import College
 def scrapcollege(request):
-    savecollege()
+    guide()
     return redirect('/admin')
 
 def scrapstate(request):
