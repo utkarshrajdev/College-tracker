@@ -7,30 +7,33 @@
     <!--Main layout-->
     <main style="margin-top: 110px">
       <div class='container'>
-        <form class="d-flex" role="search" action="{% url 'search_colleges' %}" method="get">
-          {% csrf_token %}
-          <input class="form-control me-2" type="text" name="p" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-        <nav aria-label="...">
-          <ul class="pagination">
+        <section class="p-4 mb-4 align-items-center flex-column">
+        <nav class='navbar'>
+          <ul class="pagination pr-2">
             {% if page.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="{% url 'showcolleges' %}?page={{ page.previous_page_number }}">Previous</a>
+              <a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">Previous</a>
             </li>
-            <li class="page-item"><a class="page-link" href="{% url 'showcolleges' %}?page={{ page.previous_page_number }}">{{ page.number|add:"-1" }}</a></li>
+            <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">{{ page.number|add:"-1" }}</a></li>
             {% endif %}
             <li class="page-item active" aria-current="page">
               <a class="page-link" href="#">{{ page.number }}<span class="visually-hidden">(current)</span></a>
             </li>
             {% if page.has_next %}
-            <li class="page-item"><a class="page-link" href="{% url 'showcolleges' %}?page={{ page.next_page_number }}">{{ page.number|add:"1" }}</a></li>
+            <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">{{ page.number|add:"1" }}</a></li>
             <li class="page-item">
-              <a class="page-link" href="{% url 'showcolleges' %}?page={{ page.next_page_number }}">Next</a>
+              <a class="page-link" href="{{surl}}page={{ page.next_page_number }}">Next</a>
             </li>
             {% endif %}
           </ul>
+          <form class="d-flex pe-2" role="search" action="{% url 'showcolleges' %}" method="get">
+            {% csrf_token %}
+            <input class="form-control me-2" type="text" name="p" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
         </nav>
+      </section>
+        
       <table class="table">
         <thead>
           <tr>
@@ -122,17 +125,17 @@
         <ul class="pagination">
           {% if page.has_previous %}
           <li class="page-item">
-            <a class="page-link" href="{% url 'showcolleges' %}?page={{ page.previous_page_number }}">Previous</a>
+            <a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">Previous</a>
           </li>
-          <li class="page-item"><a class="page-link" href="{% url 'showcolleges' %}?page={{ page.previous_page_number }}">{{ page.number|add:"-1" }}</a></li>
+          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">{{ page.number|add:"-1" }}</a></li>
           {% endif %}
           <li class="page-item active" aria-current="page">
             <a class="page-link" href="#">{{ page.number }}<span class="visually-hidden">(current)</span></a>
           </li>
           {% if page.has_next %}
-          <li class="page-item"><a class="page-link" href="{% url 'showcolleges' %}?page={{ page.next_page_number }}">{{ page.number|add:"1" }}</a></li>
+          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">{{ page.number|add:"1" }}</a></li>
           <li class="page-item">
-            <a class="page-link" href="{% url 'showcolleges' %}?page={{ page.next_page_number }}">Next</a>
+            <a class="page-link" href="{{surl}}page={{ page.next_page_number }}">Next</a>
           </li>
           {% endif %}
         </ul>

@@ -24,6 +24,7 @@ def login(request):
 def showcolleges(request):
     if request.user.is_authenticated :
         u = Employee.objects.get(username=request.user.username)
+        query = request.GET.get('p')
         states = u.state
         states = states.split(',')
         colleges = College.objects.none()
@@ -34,11 +35,35 @@ def showcolleges(request):
           except:
              pass
         colleges = list(colleges)
-        college_paginator = Paginator(colleges, 30)
+        colleges = College.objects.filter(id__in=[obj.id for obj in colleges])
+        object_list = []
+        if (query == None):
+          object_list = list(colleges)
+        else:
+              Collegename_list=colleges.filter(name__icontains=query)
+              City_list=colleges.filter(city__icontains=query)
+              State_list=colleges.filter(state__icontains=query)
+              for i in Collegename_list:
+                  object_list.append(i)
+              for i in City_list:
+                  if i not in object_list:
+                      object_list.append(i)
+              for i in State_list:
+                  if i not in object_list:
+                      object_list.append(i)
+        object_list = list(object_list)
+        college_paginator = Paginator(object_list, 30)
         page_num = request.GET.get('page')
         print(page_num)
         page = college_paginator.get_page(page_num)
-        context = {'u': u,'page': page}
+        surl = request.get_full_path()
+
+    # Append the search query to the URL as a query parameter
+        if query:
+            surl += '&'
+        else :
+           surl = '/showcolleges?'
+        context = {'u': u,'page': page,'query': query,'surl': surl,}
         return render (request,'showcolleges.html',context)
     else :
         return redirect('/login')
