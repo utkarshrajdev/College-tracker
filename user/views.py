@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from itertools import chain
+from django.core.paginator import Paginator
 
 def login(request):
   if request.method == 'POST' :
@@ -25,14 +26,19 @@ def showcolleges(request):
         u = Employee.objects.get(username=request.user.username)
         states = u.state
         states = states.split(',')
-        colleges =[]
+        colleges = College.objects.none()
         for state in states :
           try:
             temp = College.objects.all().filter(state=state)
             colleges = chain(colleges, temp)
           except:
              pass
-        context = {'u': u,'colleges': colleges}
+        colleges = list(colleges)
+        college_paginator = Paginator(colleges, 30)
+        page_num = request.GET.get('page')
+        print(page_num)
+        page = college_paginator.get_page(page_num)
+        context = {'u': u,'page': page}
         return render (request,'showcolleges.html',context)
     else :
         return redirect('/login')
@@ -40,6 +46,7 @@ def showcolleges(request):
 
 def register(request):
     if  request.user.is_authenticated and request.user.is_staff :
+      u = Employee.objects.get(username=request.user.username)
       if request.method == 'POST' :
         name = request.POST['name']
         username = request.POST['username']
@@ -47,12 +54,12 @@ def register(request):
         password = request.POST['new_password']
         selectedstates = request.POST.getlist('selectedstates')
         selectedstates = ','.join(selectedstates)
-        u = Employee(name=name, username=username, email=email, state=selectedstates)
-        u.set_password(password)
-        u.save()
+        n = Employee(name=name, username=username, email=email, state=selectedstates)
+        n.set_password(password)
+        n.save()
         redirect('/register')
       states = State.objects.all()
-      context = {'states': states}
+      context = {'u': u,'states': states}
       return render (request,'register.html',context)
     else :
       return redirect('/login')
