@@ -42,6 +42,32 @@ def showcolleges(request):
         return render (request,'showcolleges.html',context)
     else :
         return redirect('/login')
+
+def CollegeSearchView(request):
+   if request.user.is_authenticated :
+    query = request.GET.get('p')
+    object_list = []
+    if (query == None):
+          object_list = College.objects.all()
+    else:
+          Collegename_list=College.objects.filter(name__icontains=query)
+          City_list=College.objects.filter(city__icontains=query)
+          State_list=College.objects.filter(state__icontains=query)
+          for i in Collegename_list:
+              object_list.append(i)
+          for i in City_list:
+              if i not in object_list:
+                  object_list.append(i)
+          for i in State_list:
+              if i not in object_list:
+                  object_list.append(i)
+    context = {
+    'colleges': object_list,
+    'query': query,
+    }
+    return render (request,'showcolleges.html',context) 
+   else :
+    return redirect('/login')
     
 
 def register(request):

@@ -25,5 +25,6 @@ urlpatterns = [
     path('register', views.register, name = 'register'),
     path('logout', views.logout, name = 'logout'),
     path('changepassword', views.changepassword, name = 'changepassword'),
+    path('search-colleges/', views.CollegeSearchView, name = 'search_colleges'),
 ]
 

@@ -7,6 +7,11 @@
     <!--Main layout-->
     <main style="margin-top: 110px">
       <div class='container'>
+        <form class="d-flex" role="search" action="{% url 'search_colleges' %}" method="get">
+          {% csrf_token %}
+          <input class="form-control me-2" type="text" name="p" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
         <nav aria-label="...">
           <ul class="pagination">
             {% if page.has_previous %}
