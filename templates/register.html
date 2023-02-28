@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Register</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="https://priyankgupta.co.in/wp-content/uploads/2020/05/logo-100px.jpg" type="image/x-icon" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Google Fonts Roboto -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    />
+    <!-- MDB -->
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}"  />
+  </head>
+  <body style="background-color: #9A616D;">
+    <section>
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col">
+            <div class="card card-registration my-4">
+              <div class="row g-0">
+                <div class="col-xl-6 d-none d-xl-block">
+                  <img src="https://images.pexels.com/photos/6771900/pexels-photo-6771900.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    alt="Sample photo" class="img-fluid"
+                    style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                </div>
+                <div class="col-xl-6">
+                  <div class="card-body p-md-5 text-black">
+                    
+                  
+                  <form action="/register" method="POST">
+                  {% csrf_token %}
+                  <div class="d-flex align-items-center mb-3 pb-0">
+                    <i><img src="https://priyankgupta.co.in/wp-content/uploads/2020/05/logo-100px.jpg"
+                      alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" /></i>
+                    <span class="h2 fw-bold mb-0">Register Here.</span>
+                  </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                          <input type="text" name="username" id="form3Example1m" value="{{user.first_name}}" class="form-control form-control-lg"/>
+                          <label class="form-label" for="form3Example1m">Username</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                          <input type="text" name="name" id="form3Example1n" value="{{user.last_name}}" class="form-control form-control-lg"/>
+                          <label class="form-label" for="form3Example1n">Full Name</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="text" name="email" id="form3Example97" class="form-control form-control-lg" value="{{user.email}}"/>
+                      <label class="form-label" for="form3Example97">Email ID</label>
+                    </div>
+
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                        <button class="btn" type="button" id="dropdownMenuButton"
+                        data-mdb-toggle="dropdown" aria-expanded="false">
+                        <label class="form-label" for="form3Example1n1">Select the States</label>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          {% for s in states %}
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="selectedstates" type="checkbox" value="{{s.state}}" id="Checkme1" />
+                                        <label class="form-check-label" for="Checkme1">{{s.state}}</label>
+                                    </div>
+                                </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                    
+                        <div class="row">
+                          <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                              <input type="password" id="password" name="new_password" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                              title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" required />
+                              <label class="form-label" for="form3Example1m">Password</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                              <input type="password" id="confirm_password" name="new_cpassword" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Example1n">Confirm Password</label>
+                            </div>
+                          </div>
+                        </div>
+    
+                    
+    
+                    <div class="d-flex justify-content-end pt-3">
+                      <input class="btn btn-danger btn-lg ms-2" type="submit" value="Submit" />
+                    </div>
+
+                  </form>
+    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MDB -->
+    <script type="text/javascript" src="{% static 'js/mdb.min.js' %}" ></script>
+    <script src="{% static 'js/register.js' %}"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript"></script>
+  </body>
+</html>

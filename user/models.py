@@ -1,9 +1,16 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class State(models.Model):
     state = models.CharField(max_length=50,null=True)
     def __str__(self) :
         return self.state
+
+                
+class Employee(AbstractUser) :
+    name = models.CharField(max_length=32 ,null = True)
+    state = models.CharField(max_length=1000,null=True)
+
 
 class City(models.Model):
     city = models.CharField(max_length=50,null=True)

@@ -18,10 +18,12 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('', views.showcolleges, name = 'showcolleges'),
+    path('', views.login, name = 'login'),
+    path('login', views.login, name = 'login'),
     path('showcolleges', views.showcolleges, name = 'showcolleges'),
-    path('scrapstate', views.scrapstate, name = 'scrapstate'),
-    path('scrapcity', views.scrapcity, name = 'scrapcity'),
-    path('scrapcollege', views.scrapcollege, name = 'scrapcollege'),
+    path('editcollegedetails', views.editcollegedetails, name = 'editcollegedetails'),
+    path('register', views.register, name = 'register'),
+    path('logout', views.logout, name = 'logout'),
+    path('changepassword', views.changepassword, name = 'changepassword'),
 ]
 

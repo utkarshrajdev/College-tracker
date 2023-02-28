@@ -1,114 +1,101 @@
+{% extends 'base.html' %}
 {%load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Show Colleges</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="{% static 'css/index.css' %}"  />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  <script src="{% static 'js/c.js' %}"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $(".btn").click(function () {
-        var q = $(".qq").val();
-        var w = $(".ww").val();
-        alert(q + w);
-      })
-    });
-  </script>
+    {% block main %}
+    <!--Main Navigation-->
   
-</head>
-
-<body>
-  <nav class="navbar">
-
-    <!-- LOGO -->
-
-    <div class="logo">
-      <img src="https://priyankgupta.co.in/wp-content/uploads/2020/05/logo-100px.jpg" alt="logo">
+    <!--Main layout-->
+    <main style="margin-top: 110px">
+      <div class='container'>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">College Name</th>
+            <th scope="col">City</th>
+            <th scope="col">State</th>
+            <th scope="col">Phone</th>
+            <th scope="col">E-Mail</th>
+            <th scope="col">Website</th>
+            <th scope="col">Edit Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in colleges %}
+          <tr>
+            <td>{{c.name}}</td>
+            <td>{{c.city}}</td>
+            <td>{{c.state}}</td>
+            <td>{{c.phone}}</td>
+            <td>{{c.email}}</td>
+            <td>{{c.website}}</td>
+            <td><!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal{{c.id}}">
+                Edit Details
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">{{c.name}}</h5>
+                      <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/editcollegedetails" method="POST">
+                        {% csrf_token %}
+                        <div class="form-outline mb-4">
+                          <input type="text" name="id" value="{{c.id}}" id="form5Example1" class="form-control" readonly/>
+                          <label class="form-label" for="form5Example1">College Id</label>
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <input type="text" name="name" value="{{c.name}}" id="form5Example1" class="form-control" />
+                          <label class="form-label" for="form5Example1">College Name</label>
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <input type="text" name="city" value="{{c.city}}" id="form5Example1" class="form-control" />
+                          <label class="form-label" for="form5Example1">City</label>
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <input type="text" name="state" value="{{c.state}}" id="form5Example1" class="form-control" readonly/>
+                          <label class="form-label" for="form5Example1">State</label>
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <input type="text" name="phone" value="{{c.phone}}" id="form5Example1" class="form-control"/>
+                          <label class="form-label" for="form5Example1">Phone</label>
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <input type="text" id="form5Example2" name="email" value="{{c.email}}" class="form-control" />
+                          <label class="form-label" for="form5Example2">Email address</label>
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <input type="text" id="form5Example2" name="website" value="{{c.website}}" class="form-control" />
+                          <label class="form-label" for="form5Example2">Website</label>
+                        </div>
+                      
+                        
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                          <input class="btn btn-primary" type="submit" value="Save Changes" />
+                        </div>
+                      </form>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+    </main>
 
-    <!-- Navigation Bar -->
+    {%endblock main%}
 
-    <ul class="nav-links">
-
-      <!-- Navigation Menu -->
-
-      <div class="menu">
-
-        <li><a href="/">Home</a></li>
-
-        <li class="services">
-
-          <a href="/">Services</a>
-
-          <!-- Dropdown Menu -->
-
-          <ul class="dropdown">
-
-            <li><a href="/"> Dropdown 1 </a></li>
-
-            <li><a href="/"> Dropdown 2 </a></li>
-
-            <li><a href="/"> Dropdown 2 </a></li>
-
-            <li><a href="/"> Dropdown 3 </a></li>
-
-            <li><a href="/"> Dropdown 4 </a></li>
-
-          </ul>
-
-        </li>
-
-        <li><a href="/">Contact</a></li>
-
-        <li><a href="/">About</a></li>
-
-      </div>
-
-    </ul>
-
-  </nav>
-  <div class="formcity">
-
-    <div class="wrapper">
-
-      <h2>Choose Your State and City</h2>
-
-      <select onchange="print_city('state',this.selectedIndex)" id="s" required class="qq"></select>
-      <select id="state" required class="ww"></select>
-
-      <script>
-        print_state("s");
-      </script>
-
-      <button class="btn">Submit</button>
-
-    </div>
-
-  </div>
-
-  <table border = "1">
-    <tr>
-      <th>College Name</th>
-      <th>Phone</th>
-      <th>E-Mail</th>
-      <th>Website</th>
-    </tr>
-    {% for c in colleges %}
-    <tr>
-      <td>{{c.name}}</td>
-      <td>{{c.phone}}</td>
-      <td>{{c.email}}</td>
-      <td>{{c.website}}</td>
-    </tr>
-    {% endfor %}
-  </table>
-</body>
-
-</html>
