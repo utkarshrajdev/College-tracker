@@ -102,7 +102,7 @@ def register(request):
         name = request.POST['name']
         username = request.POST['username']
         email = request.POST['email']
-        password = request.POST['new_password']
+        password = username + "@123"
         selectedstates = request.POST.getlist('selectedstates')
         selectedstates = ','.join(selectedstates)
         n = Employee(name=name, username=username, email=email, state=selectedstates)
