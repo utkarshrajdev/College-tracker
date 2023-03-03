@@ -125,6 +125,12 @@ def editcollegedetails(request) :
     c.phone = request.POST['phone']
     c.email = request.POST['email']
     c.website = request.POST['website']
+    category = request.POST['category']
+    if category == "":
+        c.category = None
+    else:
+        c.category = category
+    c.courses = request.POST.getlist('courses[]')
     c.save()
     return redirect('/showcolleges')
 
