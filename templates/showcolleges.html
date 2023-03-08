@@ -43,6 +43,7 @@
             <th scope="col">Phone</th>
             <th scope="col">E-Mail</th>
             <th scope="col">Website</th>
+            <th scope="col">Follow Up</th>
             <th scope="col">Edit Details</th>
           </tr>
         </thead>
@@ -56,11 +57,53 @@
             <td>{{c.email}}</td>
             <td>{{c.website}}</td>
             <td><!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal{{c.id}}">
+              <button type="button" class="btn btn-danger" data-mdb-toggle="modal" data-mdb-target="#followupModal{{c.id}}">
+                Follow Up
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="followupModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Follow Up - {{c.name}}</h5>
+                      <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
+                      <form action="/editcollegedetails" method="POST">
+                        {% csrf_token %}
+                        <div class="divider d-flex align-items-center mb-4">
+                          <p class="text-center mx-3 mb-0" style="color: #a2aab7;">05/03/2023</p>
+                        </div>
+            
+                        <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                          <div>
+                            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">First Call, Done !</p>
+                            <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">11:06</p>
+                          </div>
+                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
+                            alt="avatar 1" style="width: 45px; height: 100%;">
+                        </div>
+                      </div>
+                          <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                              alt="avatar 3" style="width: 40px; height: 100%;">
+                            <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1"
+                              placeholder="Type message">
+                            <a class="ms-3" href="#!"><i class="fas fa-paper-plane"></i></a>
+                          </div>
+                      </form>
+                    
+                    
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#editdetailModal{{c.id}}">
                 Edit Details
               </button>
               <!-- Modal -->
-              <div class="modal fade" id="exampleModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="editdetailModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
