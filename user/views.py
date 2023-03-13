@@ -8,6 +8,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from itertools import chain
 from django.core.paginator import Paginator
+import datetime
 
 def login(request):
   if request.method == 'POST' :
@@ -63,7 +64,8 @@ def showcolleges(request):
             surl += '&'
         else :
            surl = '/showcolleges?'
-        context = {'u': u,'page': page,'query': query,'surl': surl,}
+        allfollowup =  Followup.objects.all()
+        context = {'u': u,'page': page,'query': query,'surl': surl,'followup': allfollowup}
         return render (request,'showcolleges.html',context)
     else :
         return redirect('/login')
@@ -86,9 +88,12 @@ def CollegeSearchView(request):
           for i in State_list:
               if i not in object_list:
                   object_list.append(i)
+    
+    allfollowup =  Followup.objects.all()
+    print(allfollowup)
     context = {
     'colleges': object_list,
-    'query': query,
+    'query': query, 'followup': allfollowup
     }
     return render (request,'showcolleges.html',context) 
    else :
@@ -100,18 +105,36 @@ def register(request):
       u = Employee.objects.get(username=request.user.username)
       if request.method == 'POST' :
         name = request.POST['name']
+        fathername = request.POST['fathername']
+        mobile = request.POST['mobile']
+        gender = request.POST['gender']
+        aadhar = request.POST['aadhar']
         username = request.POST['username']
         email = request.POST['email']
         password = username + "@123"
         selectedstates = request.POST.getlist('selectedstates')
         selectedstates = ','.join(selectedstates)
-        n = Employee(name=name, username=username, email=email, state=selectedstates)
+        n = Employee(name=name, username=username, fathername = fathername, mobile = mobile,
+                     gender = gender, aadhar = aadhar, email=email, state=selectedstates)
         n.set_password(password)
         n.save()
         redirect('/register')
       states = State.objects.all()
       context = {'u': u,'states': states}
       return render (request,'register.html',context)
+    else :
+      return redirect('/login')
+    
+def savefollowup(request):
+    if  request.user.is_authenticated :
+      if request.method == 'POST' :
+        collegeid = request.POST['collegeid']
+        message = request.POST['message']
+        current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        current_time = datetime.datetime.now().strftime('%H:%M:%S')
+        ins = Followup(collegeid=collegeid, message=message, date=current_date, time=current_time)
+        ins.save()
+        return redirect('/showcolleges')
     else :
       return redirect('/login')
 

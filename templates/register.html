@@ -21,22 +21,58 @@
                       <div class="row">
                         <div class="col-md-6 mb-4">
                           <div class="form-outline">
-                            <input type="text" name="username" id="form3Example1m" value="{{user.first_name}}" class="form-control form-control-lg"/>
+                            <input type="text" name="username" id="form3Example1m"  class="form-control form-control-lg" required/>
                             <label class="form-label" for="form3Example1m">Username</label>
                           </div>
                         </div>
                         <div class="col-md-6 mb-4">
                           <div class="form-outline">
-                            <input type="text" name="name" id="form3Example1n" value="{{user.last_name}}" class="form-control form-control-lg"/>
+                            <input type="text" name="name" id="form3Example1n" value="{{user.last_name}}" class="form-control form-control-lg" required/>
                             <label class="form-label" for="form3Example1n">Full Name</label>
                           </div>
                         </div>
                       </div>
-  
-                      <div class="form-outline mb-4">
-                        <input type="text" name="email" id="form3Example97" class="form-control form-control-lg" value="{{user.email}}"/>
-                        <label class="form-label" for="form3Example97">Email ID</label>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline mb-4">
+                            <input type="text" name="email" id="form3Example97" class="form-control form-control-lg" required/>
+                            <label class="form-label" for="form3Example97">Email ID</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline">
+                            <input type="number" name="mobile" id="form3Example1n1" class="form-control form-control-lg" title="Please, Enter Valid Mobile Number." pattern="[1-9]{1}[0-9]{9}" required />
+                            <label class="form-label" for="form3Example1n1">Contact Number</label>
+                          </div>
+                        </div>
                       </div>
+
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline">
+                            <input type="text" name="fathername" id="form3Example1n1" class="form-control form-control-lg" required />
+                            <label class="form-label" for="form3Example1n1">Father's Name</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                          <label class="form-label" for="form3Example1n1">Select Your Gender</label>
+                          <select name = "gender" placeholder="Gender" class="form-control select-input placeholder-active active focused" required >
+                            <option value="Others">Others</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                          </select>
+                        </div>
+
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                          <input type="number" name="aadhar" id="form3Example1n1" class="form-control form-control-lg" title="Please, Enter Valid Aadhar Number." pattern="[1-9]{1}[0-9]{11}" required />
+                          <label class="form-label" for="form3Example1n1">Aadhar Number</label>
+                        </div>
+                      </div>
+
+
   
                         <div class="dropdown col-md-6 mb-4">
                           <div class="form-outline">

@@ -10,6 +10,13 @@ class State(models.Model):
 class Employee(AbstractUser) :
     name = models.CharField(max_length=32 ,null = True)
     state = models.CharField(max_length=1000,null=True)
+    mobile = models.CharField(max_length=32 ,null = True)
+    fathername = models.CharField(max_length=32 ,null = True)
+    gender = models.CharField(max_length=32 ,null = True)
+    aadhar = models.CharField(max_length=32 ,null = True)
+    
+    def __str__(self) :
+        return self.username
 
 
 class City(models.Model):
@@ -18,6 +25,7 @@ class City(models.Model):
     def __str__(self) :
         return self.city
     
+
 
 
 class College(models.Model):
@@ -44,5 +52,13 @@ class College(models.Model):
 
     def __str__(self) :
         return self.name
+    
+
+
+class Followup(models.Model):
+    collegeid = models.IntegerField(null=True)
+    date = models.CharField(max_length=100,null=True)
+    time = models.CharField(max_length=100,null=True)
+    message = models.CharField(max_length=512,null=True)
     
     

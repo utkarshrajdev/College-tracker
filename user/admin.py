@@ -11,6 +11,7 @@ UserAdmin.fieldsets += ('Custom fields set', {'fields': ('name','state')}),
 admin.site.register(College)
 admin.site.register(City)
 admin.site.register(State)
+admin.site.register(Followup)
 
 
 
