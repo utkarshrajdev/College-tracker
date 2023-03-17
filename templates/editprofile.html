@@ -1,104 +1,93 @@
 {% extends 'base.html' %}
 {%load static %}
-
     {% block main %}
     <!--Main Navigation-->
   
     <!--Main layout-->
     <main style="margin-top: 110px">
-      <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col">
-            <div class="card card-registration my-4">
-              <div class="row g-0">
-                <div class="col-xl-6 d-none d-xl-block">
-                  <img src="{% static 'img/netauth-profile.jpeg' %}"
-                    alt="Sample photo" class="img-fluid"
-                    style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
-                </div>
-                <div class="col-xl-6">
-                  <div class="card-body p-md-5 text-black">
-                    <h3 class="mb-5 text-uppercase">Edit Your Profile Here</h3>
-                  
-                  <form action="/editprofile" method="POST">
-                  {% csrf_token %}
-
-                    <div class="row">
-                      <div class="col-md-6 mb-4">
-                        <div class="form-outline">
-                          <input type="text" name="Enrollment" id="form3Example1m" value="{{u.enrollment}}" class="form-control form-control-lg" readonly />
-                          <label class="form-label" for="form3Example1m">Enrollment Number</label>
-                        </div>
-                      </div>
-                      <div class="col-md-6 mb-4">
-                        <div class="form-outline">
-                          <input type="text" name="name" id="form3Example1n" value="{{u.name}}" class="form-control form-control-lg" readonly />
-                          <label class="form-label" for="form3Example1n">Full name</label>
-                        </div>
-                      </div>
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+                  <div class="col-xl-6">
+                    <div class="border border-2 border-info bg-white rounded-6 card-body p-md-5 text-black">
+                      
+                    
+                    <form action="/editprofile" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="align-items-center mb-3 pb-0">
+                      {% comment %} <i><img src="https://priyankgupta.co.in/wp-content/uploads/2020/05/logo-100px.jpg"
+                        alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" /></i> {% endcomment %}
+                      <div class="text-center h2 fw-bold mb-0">Edit Your Profile Here.</div>
                     </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline">
+                            <input type="text" name="username" id="form3Example1m" value="{{user.username}}"  class="form-control form-control-lg" readonly/>
+                            <label class="form-label" for="form3Example1m">Username</label>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline">
+                            <input type="text" name="name" id="form3Example1n" value="{{user.name}}" class="form-control form-control-lg" required/>
+                            <label class="form-label" for="form3Example1n">Full Name</label>
+                          </div>
+                        </div>
+                      </div>
 
-                    <div class="form-outline mb-4">
-                      <input type="text" name="email" id="form3Example97" class="form-control form-control-lg" value="{{u.email}}" readonly />
-                      <label class="form-label" for="form3Example97">Email ID</label>
-                    </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline mb-4">
+                            <input type="text" name="email" id="form3Example97" value='{{user.email}}' class="form-control form-control-lg" required/>
+                            <label class="form-label" for="form3Example97">Email ID</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline">
+                            <input type="number" name="mobile" id="form3Example1n1" value='{{user.mobile}}' class="form-control form-control-lg" title="Please, Enter Valid Mobile Number." pattern="[1-9]{1}[0-9]{9}" required />
+                            <label class="form-label" for="form3Example1n1">Contact Number</label>
+                          </div>
+                        </div>
+                      </div>
+
+                        <div class="col-md-6 mb-4">
+                          <div class="form-outline">
+                            <input type="text" name="fathername" id="form3Example1n1" value='{{user.father}}' class="form-control form-control-lg" required />
+                            <label class="form-label" for="form3Example1n1">Father's Name</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                          <label class="form-label" for="form3Example1n1">Select Your Gender</label>
+                          <select name = "gender" placeholder="Gender" value='{{user.gender}}' class="form-control select-input placeholder-active active focused" required >
+                            <option value="Others">Others</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                          </select>
+                        </div>
 
                       <div class="col-md-6 mb-4">
                         <div class="form-outline">
-                          <input type="text" name="father_name" id="form3Example1n1" class="form-control form-control-lg" value="{{u.father_name}}" required/>
-                          <label class="form-label" for="form3Example1n1">Father's name</label>
+                          <input type="number" name="aadhar" id="form3Example1n1" value='{{user.aadhar}}' class="form-control form-control-lg" title="Please, Enter Valid Aadhar Number." pattern="[1-9]{1}[0-9]{11}" required />
+                          <label class="form-label" for="form3Example1n1">Aadhar Number</label>
                         </div>
                       </div>
-                      <div class="col-md-6 mb-4">
-    
-                        <select name = "branch" class="form-control select-input placeholder-active active focused" >
-                          <option value="{{u.branch}}">{{u.branch}}</option>
-                          <option value="B.Tech Civil Engineering">B.Tech Civil Engineering</option>
-                          <option value="B.Tech Mechanical Engineering">B.Tech Mechanical Engineering</option>
-                          <option value="B.Tech Electrical Engineering">B.Tech Electrical Engineering</option>
-                          <option value="B.Tech Electronics Engineering">B.Tech Electronics Engineering</option>
-                          <option value="B. Architecture">B. Architecture</option>
-                          <option value="B.Tech Computer Science & Engineering">B.Tech Computer Science & Engineering</option>
-                          <option value="B.Tech Chemical Engineering">B.Tech Chemical Engineering</option>
-                          <option value="B.Tech Information Technology">B.Tech Information Technology</option>
-                          <option value="B.Tech Electronics & Telecommunication Engineering">B.Tech Electronics & Telecommunication Engineering</option>
-                          <option value="B.Tech Automobile Engineering">B.Tech Automobile Engineering</option>
-                          <option value="B.Tech Information Technology(Artificial Intelligence and Robotics)">B.Tech Information Technology(Artificial Intelligence and Robotics)</option>
-                          <option value="B.Tech Internet of Things (IoT) (Offered by Information Technology Department)">B.Tech Internet of Things (IoT) (Offered by Information Technology Department)</option>
-                          <option value="B.Tech Mathematics and Computing">B.Tech Mathematics and Computing</option>
-                          <option value="B.Tech Internet of Things (Offered by Electrical Engineering Department)">B.Tech Internet of Things (Offered by Electrical Engineering Department)</option>
-                          <option value="B.Tech Artificial Intelligence(AI) and Data Science">B.Tech Artificial Intelligence(AI) and Data Science</option>
-                          <option value="B.Tech Artificial Intelligence and Machine Learning">B.Tech Artificial Intelligence and Machine Learning</option>
-                          <option value="B.Tech Computer Science and Design">B.Tech Computer Science and Design</option>
-                          <option value="Master of Computer Applications(M.C.A.)">Master of Computer Applications(M.C.A.)</option>
-                          <option value="M.E. Construction Technology & Management">M.E. Construction Technology & Management</option>
-                          <option value="M.E. Industrial Systems & Drives">M.E. Industrial Systems & Drives</option>
-                          <option value="M.E. Communication Control & Networking">M.E. Communication Control & Networking</option>
-                          <option value="M.Tech Production Engineering">M.Tech Production Engineering</option>
-                          <option value="Masters in Urban Planning">Masters in Urban Planning</option>
-                          <option value="M.Tech Computer Science & Engineering">M.Tech Computer Science & Engineering</option>
-                          <option value="M.Tech Information Technology">M.Tech Information Technology</option>
-                          <option value="M.Tech Environment Engineering">M.Tech Environment Engineering</option>
-                          <option value="MBA">MBA</option>
-                          <option value="Ph.D">Ph.D</option>
-                          <option value="Others">Others</option>
-                        </select>
-                      </div>
+
+
+                      <label class="form-label" for="customFile">Upload Profile Iamge</label>
+                      <input type="file" class="form-control" name='profileimage' id="customFile" />
+
+                        <div class="d-flex justify-content-end pt-3">
+                          <input class="btn btn-danger btn-lg ms-2" type="submit" value="Submit" />
+                        </div>
+  
+                    </form>
       
-                    <div class="d-flex justify-content-end pt-3">
-                      <input class="btn btn-warning btn-lg ms-2" type="submit" value="Submit" />
                     </div>
-
-                  </form>
-    
                   </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
-    
     </main>
 
+
     {%endblock main%}
+  

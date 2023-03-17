@@ -9,6 +9,17 @@ from django.contrib.auth import logout as auth_logout
 from itertools import chain
 from django.core.paginator import Paginator
 import datetime
+import cloudinary
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
+
+# // Config
+cloudinary.config(
+  cloud_name = "dzqr5mmwt",
+  api_key = "263454863926658",
+  api_secret = "5DfZPkgxd7VM0P1Drp9Sk-vAM9A",
+  secure = True
+)
 
 def login(request):
   if request.method == 'POST' :
@@ -175,3 +186,31 @@ def changepassword(request):
     return render (request, 'changepassword.html', context) 
   else :
     return redirect('/login')
+  
+
+
+
+def editprofile(request):
+    if  request.user.is_authenticated :
+      u = Employee.objects.get(username=request.user.username)
+      if request.method == 'POST' :
+        u.name = request.POST['name']
+        u.fathername = request.POST['fathername']
+        u.mobile = request.POST['mobile']
+        u.gender = request.POST['gender']
+        u.aadhar = request.POST['aadhar']
+        u.username = request.POST['username']
+        u.email = request.POST['email']
+        profileimage = request.FILES['profileimage']
+        cloudinaryname = u.username+str(u.id)
+        upload(profileimage, public_id=cloudinaryname)
+
+        # // Transform
+        url, options = cloudinary_url(cloudinaryname, width=100, height=100, crop="fill")
+        u.imageurl = url
+        u.save()
+        redirect('/showcolleges')
+      context = {'u': u,'user':u,}
+      return render (request,'editprofile.html',context)
+    else :
+      return redirect('/login')
