@@ -164,7 +164,10 @@ def editcollegedetails(request) :
         c.category = None
     else:
         c.category = category
-    c.courses = request.POST.getlist('courses[]')
+    courses = request.POST.getlist('courses[]')
+    if not courses:
+        courses = None
+    c.courses = courses
     c.save()
     return redirect('/showcolleges')
 
