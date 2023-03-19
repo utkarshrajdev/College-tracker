@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{%load static %}
+
+{% block main %}
+<!--Main Navigation-->
+
+<!--Main layout-->
+<main style="margin-top: 110px">
+  <div class='container'>
+    <section class="p-4 mb-4 align-items-center flex-column">
+      <nav class='navbar'>
+        <ul class="pagination pr-2">
+          {% if page.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">
+            {{ page.previous_page_number }}</a></li>
+          {% endif %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{ page.number }}<span class="visually-hidden">(current)</span></a>
+          </li>
+          {% if page.has_next %}
+          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">
+            {{ page.next_page_number }} </a></li>
+          <li class="page-item">
+            <a class="page-link" href="{{surl}}page={{ page.next_page_number }}">Next</a>
+          </li>
+          {% endif %}
+        </ul>
+        <form class="d-flex pe-2" role="search" action="{% url 'showcolleges' %}" method="get">
+          {% csrf_token %}
+          <input class="form-control me-2" type="text" name="p" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </nav>
+    </section>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">College Name</th>
+          <th scope="col">City</th>
+          <th scope="col">State</th>
+          <th scope="col">Phone</th>
+          <th scope="col">E-Mail</th>
+          <th scope="col">Website</th>
+          <th scope="col">Category</th>
+          <th scope="col">Course</th>
+          <th scope="col">Follow Up</th>
+          <th scope="col">Edit Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in page.object_list %}
+        <tr>
+          <td>{{c.name}}</td>
+          <td>{{c.city}}</td>
+          <td>{{c.state}}</td>
+          <td>{{c.phone}}</td>
+          <td>{{c.email}}</td>
+          <td>{{c.website}}</td>
+          <td>{{c.category}}</td>
+          <td>{{c.courses}}</td>
+          <td><!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-mdb-toggle="modal"
+              data-mdb-target="#followupModal{{c.id}}">
+              Follow Up
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="followupModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Follow Up - {{c.name}}</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body overflow-auto" style="position: relative; height: 400px">
+                    <form action="/savefollowup" method="POST">
+                      {% csrf_token %}
+                      {% for each in followup %}
+                      {% if each.collegeid == c.id%}
+                      <div class="divider d-flex align-items-center mb-4">
+                        <p class="text-center mx-3 mb-0" style="color: #a2aab7;">{{each.date}} - {{each.time}}</p>
+                      </div>
+                      <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                        <div>
+                          <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">{{each.message}}</p>
+                        </div>
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
+                          alt="avatar 1" style="width: 45px; height: 100%;">
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+                  </div>
+                  <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                      alt="avatar 3" style="width: 40px; height: 100%;">
+                    <input type="text" name='message' class="form-control form-control-lg" id="exampleFormControlInput1"
+                      placeholder="Type message" />
+                    <input type="integer" name='collegeid' value={{c.id}} class="form-control form-control-lg"
+                      id="exampleFormControlInput1" placeholder="Type message" hidden />
+                    <button class="btn btn-transparent" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td><!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-mdb-toggle="modal"
+              data-mdb-target="#editdetailModal{{c.id}}">
+              Edit Details
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="editdetailModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{c.name}}</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/editcollegedetails" method="POST">
+                      {% csrf_token %}
+                      <div class="form-outline mb-4">
+                        <input type="text" name="id" value="{{c.id}}" id="form5Example1" class="form-control"
+                          readonly />
+                        <label class="form-label" for="form5Example1">College Id</label>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input type="text" name="name" value="{{c.name}}" id="form5Example1" class="form-control" />
+                        <label class="form-label" for="form5Example1">College Name</label>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input type="text" name="city" value="{{c.city}}" id="form5Example1" class="form-control" />
+                        <label class="form-label" for="form5Example1">City</label>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input type="text" name="state" value="{{c.state}}" id="form5Example1" class="form-control"
+                          readonly />
+                        <label class="form-label" for="form5Example1">State</label>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input type="text" name="phone" value="{{c.phone}}" id="form5Example1" class="form-control" />
+                        <label class="form-label" for="form5Example1">Phone</label>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input type="text" id="form5Example2" name="email" value="{{c.email}}" class="form-control" />
+                        <label class="form-label" for="form5Example2">Email address</label>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input type="text" id="form5Example2" name="website" value="{{c.website}}"
+                          class="form-control" />
+                        <label class="form-label" for="form5Example2">Website</label>
+                      </div>
+                      <label for="category">Category:</label>
+                      <select name="category" class="form-control">
+                        <option value="None">None</option>
+                        <option value="IIT">IIT</option>
+                        <option value="NIT">NIT</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <br>
+
+                      <div class="dropdown col-md-6 mb-4">
+                        <div class="form-outline">
+                          <button class="btn" type="button" id="dropdownMenuButton" data-mdb-toggle="dropdown"
+                            aria-expanded="false">
+                            <label class="form-label" for="form3Example1n1">Select Courses</label>
+                          </button>
+                          <ul class="dropdown-menu" style="height:300px; overflow-y:auto;" aria-labelledby="dropdownMenuButton">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="BTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">BTech</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="MTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">MTech</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="MTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">MS</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="MTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">MBA</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                        <input class="btn btn-primary" type="submit" value="Save Changes" />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <nav aria-label="...">
+      <ul class="pagination">
+        {% if page.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">
+          {{ page.previous_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" href="#">{{ page.number }}<span class="visually-hidden">(current)</span></a>
+        </li>
+        {% if page.has_next %}
+        <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">
+          {{ page.next_page_number }}</a></li>
+        <li class="page-item">
+          <a class="page-link" href="{{surl}}page={{ page.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</main>
+
+{%endblock main%}

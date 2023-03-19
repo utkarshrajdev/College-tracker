@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block main %}
+<!--Main Navigation-->
+
+<!--Main layout-->
+<main style="margin-top: 110px">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-6">
+        <div class="border border-2 border-info bg-white rounded-6 card-body p-md-5 text-black">
+
+
+          <form action="/editprofile" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="align-items-center mb-3 pb-0">
+              {% comment %} <i><img src="https://priyankgupta.co.in/wp-content/uploads/2020/05/logo-100px.jpg"
+                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" /></i> {% endcomment %}
+              <div class="text-center h2 fw-bold mb-0">Edit Your Profile Here.</div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input type="text" name="username" id="form3Example1m" value="{{user.username}}"
+                    class="form-control form-control-lg" readonly />
+                  <label class="form-label" for="form3Example1m">Username</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input type="text" name="name" id="form3Example1n" value="{{user.name}}"
+                    class="form-control form-control-lg" required />
+                  <label class="form-label" for="form3Example1n">Full Name</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-outline mb-4">
+                  <input type="text" name="email" id="form3Example97" value='{{user.email}}'
+                    class="form-control form-control-lg" required />
+                  <label class="form-label" for="form3Example97">Email ID</label>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input type="number" name="mobile" id="form3Example1n1" value='{{user.mobile}}'
+                    class="form-control form-control-lg" title="Please, Enter Valid Mobile Number."
+                    pattern="[1-9]{1}[0-9]{9}" required />
+                  <label class="form-label" for="form3Example1n1">Contact Number</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <div class="form-outline">
+                <input type="text" name="fathername" id="form3Example1n1" value='{{user.fathername}}'
+                  class="form-control form-control-lg" required />
+                <label class="form-label" for="form3Example1n1">Father's Name</label>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <label class="form-label" for="form3Example1n1">Select Your Gender</label>
+              <select name="gender" placeholder="Gender" value='{{user.gender}}'
+                class="form-control select-input placeholder-active active focused" required>
+                <option value="{{user.gender}}">{{user.gender}}</option>
+                <option value="Others">Others</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <div class="form-outline">
+                <input type="number" name="aadhar" id="form3Example1n1" value='{{user.aadhar}}'
+                  class="form-control form-control-lg" title="Please, Enter Valid Aadhar Number."
+                  pattern="[1-9]{1}[0-9]{11}" required />
+                <label class="form-label" for="form3Example1n1">Aadhar Number</label>
+              </div>
+            </div>
+
+
+            <label class="form-label" for="customFile">Upload Profile Iamge</label>
+            <input type="file" class="form-control" name='profileimage' id="customFile" />
+
+            <div class="d-flex justify-content-end pt-3">
+              <input class="btn btn-danger btn-lg ms-2" type="submit" value="Submit" />
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+{%endblock main%}
