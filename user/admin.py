@@ -6,7 +6,7 @@ class EmployeeAdmin(UserAdmin):
     pass
 admin.site.register(Employee, EmployeeAdmin)
 
-UserAdmin.fieldsets += ('Custom fields set', {'fields': ('name','state')}),
+UserAdmin.fieldsets += ('Custom fields set', {'fields': ('name','state','fathername')}),
 
 admin.site.register(College)
 admin.site.register(City)
