@@ -14,15 +14,15 @@
           <li class="page-item">
             <a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">Previous</a>
           </li>
-          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">{{
-              page.number|add:"-1" }}</a></li>
+          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">
+            {{ page.previous_page_number }}</a></li>
           {% endif %}
           <li class="page-item active" aria-current="page">
             <a class="page-link" href="#">{{ page.number }}<span class="visually-hidden">(current)</span></a>
           </li>
           {% if page.has_next %}
-          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">{{
-              page.number|add:"1" }}</a></li>
+          <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">
+            {{ page.next_page_number }} </a></li>
           <li class="page-item">
             <a class="page-link" href="{{surl}}page={{ page.next_page_number }}">Next</a>
           </li>
@@ -163,28 +163,51 @@
                         <option value="Other">Other</option>
                       </select>
                       <br>
-                      <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="courses-dropdown"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Courses
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="courses-dropdown">
-                          <div class="dropdown-item">
-                            <input type="checkbox" id="btech" name="courses[]" value="BTech">
-                            <label for="btech">BTech</label>
-                          </div>
-                          <div class="dropdown-item">
-                            <input type="checkbox" id="mtech" name="courses[]" value="MTech">
-                            <label for="mtech">MTech</label>
-                          </div>
-                          <div class="dropdown-item">
-                            <input type="checkbox" id="ms" name="courses[]" value="MS">
-                            <label for="ms">MS</label>
-                          </div>
-                          <div class="dropdown-item">
-                            <input type="checkbox" id="mba" name="courses[]" value="MBA">
-                            <label for="mba">MBA</label>
-                          </div>
+
+                      <div class="dropdown col-md-6 mb-4">
+                        <div class="form-outline">
+                          <button class="btn" type="button" id="dropdownMenuButton" data-mdb-toggle="dropdown"
+                            aria-expanded="false">
+                            <label class="form-label" for="form3Example1n1">Select Courses</label>
+                          </button>
+                          <ul class="dropdown-menu" style="height:300px; overflow-y:auto;" aria-labelledby="dropdownMenuButton">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="BTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">BTech</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="MTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">MTech</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="MTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">MS</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" name="courses[]" value="MTech" type="checkbox"
+                                    id="Checkme1" />
+                                  <label class="form-check-label" for="Checkme1">MBA</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                       <br>
@@ -208,15 +231,15 @@
         <li class="page-item">
           <a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">Previous</a>
         </li>
-        <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">{{
-            page.number|add:"-1" }}</a></li>
+        <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.previous_page_number }}">
+          {{ page.previous_page_number }}</a></li>
         {% endif %}
         <li class="page-item active" aria-current="page">
           <a class="page-link" href="#">{{ page.number }}<span class="visually-hidden">(current)</span></a>
         </li>
         {% if page.has_next %}
-        <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">{{
-            page.number|add:"1" }}</a></li>
+        <li class="page-item"><a class="page-link" href="{{surl}}page={{ page.next_page_number }}">
+          {{ page.next_page_number }}</a></li>
         <li class="page-item">
           <a class="page-link" href="{{surl}}page={{ page.next_page_number }}">Next</a>
         </li>

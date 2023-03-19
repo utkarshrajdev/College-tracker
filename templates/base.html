@@ -17,10 +17,10 @@
   <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
   <link rel="stylesheet" href="{% static 'css/main.css' %}" />
   <link rel="stylesheet" href="{% static 'css/chat.css' %}" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> {% endcomment %}
 
 </head>
 
@@ -30,6 +30,7 @@
     <nav id="sidebarMenu" class="collapse d-lg-block bg-white sidebar collapse">
       <div class="pt-5 position-sticky">
         <div class="list-group list-group-flush mx-3 mt-4 ">
+          {% if u.is_authenticated %}
           <a href="/showcolleges" class="bg-transparent list-group-item list-group-item-action py-2 ripple"
             aria-current="true">
             <i class="fas fa-building fa-fw me-3"></i><span>Show Colleges</span>
@@ -45,6 +46,14 @@
           <a href="/register" class="bg-transparent list-group-item list-group-item-action py-2 ripple ">
             <i class="fas fa-user-alt fa-fw me-3"></i><span>Make Employee</span>
             {% endif %}
+          
+          {% else %}
+
+          <a href="#" class="bg-transparent list-group-item list-group-item-action py-2 ripple"><i
+            class="fas fa-lock fa-fw me-3"></i><span>Reset Password</span></a>
+
+          {% endif %}
+
         </div>
       </div>
     </nav>
