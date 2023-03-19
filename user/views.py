@@ -201,13 +201,16 @@ def editprofile(request):
         u.aadhar = request.POST['aadhar']
         u.username = request.POST['username']
         u.email = request.POST['email']
-        profileimage = request.FILES['profileimage']
-        cloudinaryname = u.username+str(u.id)
-        upload(profileimage, public_id=cloudinaryname)
+        try :
+          profileimage = request.FILES['profileimage']
+          cloudinaryname = u.username+str(u.id)
+          upload(profileimage, public_id=cloudinaryname)
 
-        # // Transform
-        url, options = cloudinary_url(cloudinaryname, width=100, height=100, crop="fill")
-        u.imageurl = url
+          # // Transform
+          url, options = cloudinary_url(cloudinaryname, width=100, height=100, crop="fill")
+          u.imageurl = url
+        except :
+           pass
         u.save()
         redirect('/showcolleges')
       context = {'u': u,'user':u,}
