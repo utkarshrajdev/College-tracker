@@ -12,6 +12,13 @@ import datetime
 import cloudinary
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
+from .mail import *
+from .sms import *
+from django.db.models import OuterRef, Subquery, Value, CharField
+from django.contrib import messages
+import csv
+import json
+from django.http import JsonResponse
 
 # // Config
 cloudinary.config(
@@ -38,14 +45,19 @@ def showcolleges(request):
         u = Employee.objects.get(username=request.user.username)
         query = request.GET.get('p')
         states = u.state
-        states = states.split(',')
-        colleges = College.objects.none()
-        for state in states :
-          try:
-            temp = College.objects.all().filter(state=state)
-            colleges = chain(colleges, temp)
-          except:
-             pass
+        if request.user.is_staff :
+          colleges = College.objects.all()
+        else :
+          states = states.split(',')
+          colleges = College.objects.none()
+          for state in states :
+            try:
+              temp = College.objects.all().filter(state=state)
+              colleges = chain(colleges, temp)
+            except:
+              pass
+        
+        colleges = colleges.filter(status = "active")
         colleges = list(colleges)
         colleges = College.objects.filter(id__in=[obj.id for obj in colleges])
         object_list = []
@@ -75,9 +87,140 @@ def showcolleges(request):
             surl += '&'
         else :
            surl = '/showcolleges?'
-        allfollowup =  Followup.objects.all()
+        allfollowup =  Followup.objects.all().order_by('-id')
         context = {'u': u,'page': page,'query': query,'surl': surl,'followup': allfollowup}
         return render (request,'showcolleges.html',context)
+    else :
+        return redirect('/login')
+    
+
+def massmail(request):
+    if request.user.is_authenticated :
+        if request.method == 'POST' :
+          subject = request.POST['subject']
+          body = request.POST['body']
+          selectedcolleges = request.POST.getlist('selectedcolleges')
+          emails = []
+          for each in selectedcolleges:
+            try :
+              c = College.objects.get(id=int(each))
+              if ("@" in c.email):
+                temp = c.email.split(',')
+                for mail in temp :
+                  emails.append(mail.strip())
+            except:
+              pass
+          template_mail(subject, emails, 'mailtemplate.html', {'body':body}, '20cs1107@mitsgwl.ac.in')
+          messages.success(request, 'Mailed Successfully !!')
+        u = Employee.objects.get(username=request.user.username)
+        states = u.state
+        if request.user.is_staff :
+          states = State.objects.all()
+          states = [state.state for state in states]
+        else :
+          states = states.split(',')
+        context = {'u': u, 'states':states}
+        return render (request,'massmail.html',context)
+    else :
+        return redirect('/login')
+
+
+def masssms(request):
+    if request.user.is_authenticated :
+        if request.method == 'POST' :
+          body = request.POST['body']
+          selectedcolleges = request.POST.getlist('selectedcolleges')
+          numbers = []
+          for each in selectedcolleges:
+            try :
+              c = College.objects.get(id=int(each))
+              temp = c.phone.split(',')
+              for number in temp :
+                numbers.append(number.strip())
+            except:
+              pass
+          sendsms(body,numbers)
+          messages.success(request, 'SMS sent Successfully !!')
+        u = Employee.objects.get(username=request.user.username)
+        states = u.state
+        if request.user.is_staff :
+          states = State.objects.all()
+          states = [state.state for state in states]
+        else :
+          states = states.split(',')
+        context = {'u': u, 'states':states}
+        return render (request,'masssms.html',context)
+    else :
+        return redirect('/login')
+
+
+def get_colleges_by_state(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        selected_state = data.get('state')
+
+        # Perform the necessary logic to filter colleges based on the selected state
+        # Assuming you have a College model with a 'state' field, you can filter the colleges like this:
+        colleges = College.objects.all().filter(state=selected_state).filter(status='active')
+        # Create a list of dictionaries containing college data to be sent as JSON response
+        college_data = [{'id': college.id, 'name': college.name} for college in colleges]
+        # Return the college data as a JSON response
+        return JsonResponse({'colleges': college_data})
+    # If the request method is not POST or an error occurs, return an empty JSON response
+    return JsonResponse({'colleges': []})
+
+
+
+def inactivecolleges(request):
+    if request.user.is_authenticated :
+        u = Employee.objects.get(username=request.user.username)
+        query = request.GET.get('p')
+        states = u.state
+        if request.user.is_staff :
+          colleges = College.objects.all()
+        else :
+          states = states.split(',')
+          colleges = College.objects.none()
+          for state in states :
+            try:
+              temp = College.objects.all().filter(state=state)
+              colleges = chain(colleges, temp)
+            except:
+              pass
+        
+        colleges = colleges.filter(status = "inactive")
+        colleges = list(colleges)
+        colleges = College.objects.filter(id__in=[obj.id for obj in colleges])
+        object_list = []
+        if (query == None):
+          object_list = list(colleges)
+        else:
+              Collegename_list=colleges.filter(name__icontains=query)
+              City_list=colleges.filter(city__icontains=query)
+              State_list=colleges.filter(state__icontains=query)
+              for i in Collegename_list:
+                  object_list.append(i)
+              for i in City_list:
+                  if i not in object_list:
+                      object_list.append(i)
+              for i in State_list:
+                  if i not in object_list:
+                      object_list.append(i)
+        object_list = list(object_list)
+        college_paginator = Paginator(object_list, 30)
+        page_num = request.GET.get('page')
+        print(page_num)
+        page = college_paginator.get_page(page_num)
+        surl = request.get_full_path()
+
+    # Append the search query to the URL as a query parameter
+        if query:
+            surl += '&'
+        else :
+           surl = '/inactivecolleges?'
+        allfollowup =  Followup.objects.all().order_by('-id')
+        context = {'u': u,'page': page,'query': query,'surl': surl,'followup': allfollowup}
+        return render (request,'inactivecolleges.html',context)
     else :
         return redirect('/login')
 
@@ -122,14 +265,31 @@ def register(request):
         aadhar = request.POST['aadhar']
         username = request.POST['username']
         email = request.POST['email']
+        role = request.POST['email']
         password = username + "@123"
         selectedstates = request.POST.getlist('selectedstates')
         selectedstates = ','.join(selectedstates)
-        n = Employee(name=name, username=username, fathername = fathername, mobile = mobile,
-                     gender = gender, aadhar = aadhar, email=email, state=selectedstates)
-        n.set_password(password)
-        n.save()
-        redirect('/register')
+        lst = Employee.objects.all().filter(email=email).exists()
+        lst2 = Employee.objects.all().filter(username=username).exists()
+        if lst :
+           messages.warning(request, 'User with same email already exists !!')
+        elif lst2 :
+           messages.warning(request, 'User with same username already exists !!')
+        else :
+          n = Employee(name=name, username=username, fathername = fathername, mobile = mobile,
+                      gender = gender, aadhar = aadhar, email=email, state=selectedstates)
+          n.set_password(password)
+          n.save()
+          if ( role == "Staff") :
+             n.is_staff = True
+             n.save()
+          messages.success(request, 'User Successfully Registered !!')
+          try:
+            template_mail('College Tracker - Successfully Registered', [email], 'registermail.html', {'user': n, 'password':password}, 
+            '20cs1107@mitsgwl.ac.in')
+          except :
+            pass
+          redirect('/register')
       states = State.objects.all()
       context = {'u': u,'states': states}
       return render (request,'register.html',context)
@@ -143,7 +303,8 @@ def savefollowup(request):
         message = request.POST['message']
         current_date = datetime.datetime.now().strftime('%Y-%m-%d')
         current_time = datetime.datetime.now().strftime('%H:%M:%S')
-        ins = Followup(collegeid=collegeid, message=message, date=current_date, time=current_time)
+        ins = Followup(collegeid=collegeid, message=message, date=current_date, time=current_time, 
+        employee = request.user.username)
         ins.save()
         return redirect('/showcolleges')
     else :
@@ -159,6 +320,7 @@ def editcollegedetails(request) :
     c.phone = request.POST['phone']
     c.email = request.POST['email']
     c.website = request.POST['website']
+    c.status = request.POST['status']
     category = request.POST['category']
     if category == "":
         c.category = None
@@ -215,8 +377,154 @@ def editprofile(request):
         except :
            pass
         u.save()
+        messages.success(request, 'Profile Successfully Updated !!')
         redirect('/showcolleges')
       context = {'u': u,'user':u,}
       return render (request,'editprofile.html',context)
     else :
       return redirect('/login')
+
+
+def showfollowup(request):
+    if  request.user.is_authenticated :
+        u = Employee.objects.get(username=request.user.username)
+        query = request.GET.get('p')
+        colleges = College.objects.all()
+        followups = Followup.objects.all()
+        #college_lookup = {college.id: college.name for college in colleges}
+        college_lookup = College.objects.filter(id=OuterRef('collegeid')).values('name')[:1]
+
+# Get the queryset of all followups with college names
+        followups = Followup.objects.annotate(collegename=Subquery(college_lookup, output_field=CharField()))
+        followups = followups.order_by('-id')
+        #followups = Followup.objects.annotate(collegename=Subquery(College.objects.filter(collegeid=F('collegeid')).values('collegename')[:1]))
+        #followups = followups.annotate(collegename=F('collegeid__collegename'))
+        if request.user.is_staff :
+          followups = followups
+        else :
+          followups = followups.filter(employee=request.user.username)
+        object_list = []
+        if (query == None):
+          object_list = list(followups)
+        else:
+              Collegename_list=followups.filter(collegename__icontains=query)
+              Employee_list=followups.filter(employee__icontains=query)
+              for i in Collegename_list:
+                  object_list.append(i)
+              for i in Employee_list:
+                  if i not in object_list:
+                      object_list.append(i)
+        object_list = list(object_list)
+        college_paginator = Paginator(object_list, 30)
+        page_num = request.GET.get('page')
+        print(page_num)
+        page = college_paginator.get_page(page_num)
+        surl = request.get_full_path()
+
+    # Append the search query to the URL as a query parameter
+        if query:
+            surl += '&'
+        else :
+           surl = '/showfollowup?'
+        allfollowup =  Followup.objects.all()
+        context = {'u': u,'page': page,'query': query,'surl': surl,'followup': allfollowup, 'colleges': colleges}
+        return render (request,'showfollowup.html',context)
+    else :
+        return redirect('/login')
+
+
+def allemployee(request):
+    if  request.user.is_authenticated and request.user.is_staff :
+        if request.method == 'POST' :
+          e = Employee.objects.get(username=request.POST['username'])
+          e.name = request.POST['name']
+          e.mobile = request.POST['mobile']
+          e.fathername = request.POST['fathername']
+          e.aadhar = request.POST['aadhar']
+          role = request.POST['aadhar']
+          selectedstates = request.POST.getlist('selectedstates')
+          selectedstates = ','.join(selectedstates)
+          e.state = selectedstates
+          if (role == "Staff"):
+             e.is_staff = True
+          else :
+             e.is_staff = False
+          e.save()
+        u = Employee.objects.get(username=request.user.username)
+        query = request.GET.get('p')
+        employees = Employee.objects.all()
+        object_list = []
+        states = State.objects.all()
+        try: 
+          for employee in employees:
+            employee.state = employee.state.split(',')
+        except:
+           pass
+        if (query == None):
+          object_list = list(employees)
+        else:
+              Name_list=employees.filter(name__icontains=query)
+              Username_list=employees.filter(username__icontains=query)
+              Email_list=employees.filter(email__icontains=query)
+              State_list=employees.filter(state__icontains=query)
+              for i in Name_list:
+                  object_list.append(i)
+              for i in Username_list:
+                  if i not in object_list:
+                      object_list.append(i)
+              for i in Email_list:
+                  if i not in object_list:
+                      object_list.append(i)
+              for i in State_list:
+                  if i not in object_list:
+                      object_list.append(i)
+        object_list = list(object_list)
+        college_paginator = Paginator(object_list, 30)
+        page_num = request.GET.get('page')
+        print(page_num)
+        page = college_paginator.get_page(page_num)
+        surl = request.get_full_path()
+
+    # Append the search query to the URL as a query parameter
+        if query:
+            surl += '&'
+        else :
+           surl = '/allemployee?'
+        allfollowup =  Followup.objects.all()
+        context = {'u': u,'page': page,'query': query,'surl': surl, 'states':states}
+        return render (request,'allemployee.html',context)
+    else :
+        return redirect('/login')
+    
+
+
+
+
+
+def addcollege(request):
+    if  request.user.is_authenticated :
+      u = Employee.objects.get(username=request.user.username)
+      if u.is_staff :
+         states = State.objects.all()
+         states = [state.state for state in states]
+      else :
+        states = u.state.split(',')
+      if request.method == 'POST' :
+        name = request.POST['name']
+        city = request.POST['city']
+        state = request.POST['state']
+        phone = request.POST['phone']
+        email = request.POST['email']
+        website = request.POST['website']
+        c = College(name = name, city = city, state = state, phone = phone, email = email, website = website)
+        c.save()
+        messages.success(request, 'College Successfully Registered !!')
+        redirect('/showcolleges')
+      context = {'u': u,'user':u, 'states': states}
+      return render (request,'addcollege.html',context)
+    else :
+      return redirect('/login')
+    
+
+
+

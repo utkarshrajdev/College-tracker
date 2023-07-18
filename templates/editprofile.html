@@ -5,6 +5,15 @@
 
 <!--Main layout-->
 <main style="margin-top: 110px">
+  {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+      <ul class="messages bg-success text-light alert alert-success" role='success'>
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      </ul>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-xl-6">

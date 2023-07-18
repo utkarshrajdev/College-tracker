@@ -21,7 +21,12 @@ from . import views
 urlpatterns = [
     path('', views.login, name = 'login'),
     path('login', views.login, name = 'login'),
+    path('get_colleges_by_state', views.get_colleges_by_state, name='get_colleges_by_state'),
+    path('massmail', views.massmail, name = 'massmail'),
+    path('masssms', views.masssms, name = 'masssms'),
     path('showcolleges', views.showcolleges, name = 'showcolleges'),
+    path('inactivecolleges', views.inactivecolleges, name = 'inactivecolleges'),
+    path('addcollege', views.addcollege, name = 'addcollege'),
     path('editcollegedetails', views.editcollegedetails, name = 'editcollegedetails'),
     path('register', views.register, name = 'register'),
     path('logout', views.logout, name = 'logout'),
@@ -33,6 +38,8 @@ urlpatterns = [
     path('reset_password_set/', auth_views.PasswordResetDoneView.as_view(template_name="password_reset_send.html"),name="password_reset_done"),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password_reset_form.html"), name="password_reset_confirm"),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name="password_reset_done.html"), name="password_reset_complete"),
+    path('showfollowup', views.showfollowup, name = 'showfollowup'),
+    path('allemployee', views.allemployee, name = 'allemployee'),
 
 ]
 

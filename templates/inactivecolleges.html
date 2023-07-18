@@ -28,7 +28,7 @@
           </li>
           {% endif %}
         </ul>
-        <form class="d-flex pe-2" role="search" action="{% url 'showcolleges' %}" method="get">
+        <form class="d-flex pe-2" role="search" action="{% url 'inactivecolleges' %}" method="get">
           {% csrf_token %}
           <input class="form-control me-2" type="text" name="p" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
@@ -199,8 +199,8 @@
                         <label class="form-label" for="form3Example1n1">Change Status</label>
                         <select name="status" placeholder="Status"
                           class="form-control select-input placeholder-active active focused" required>
-                          <option value="active">Active</option>
                           <option value="inactive">Inactive</option>
+                          <option value="active">Active</option>
                         </select>
                       </div>
 

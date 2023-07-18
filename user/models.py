@@ -49,6 +49,7 @@ class College(models.Model):
     website = models.URLField(max_length=100,null=True)
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, null=True)
     courses = models.CharField(max_length=10, choices=COURSE_CHOICES,null=True)
+    status = models.CharField(max_length=12,default="active")
     
 
     def __str__(self) :
@@ -61,5 +62,6 @@ class Followup(models.Model):
     date = models.CharField(max_length=100,null=True)
     time = models.CharField(max_length=100,null=True)
     message = models.CharField(max_length=512,null=True)
+    employee = models.CharField(max_length=100,null=True)
     
     

@@ -74,12 +74,24 @@ WSGI_APPLICATION = 'college_tracker.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'collegetracker',
+        'USER': 'root',
+        'PASSWORD': 'sanskar',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
 }
+
 
 
 # Password validation
@@ -137,5 +149,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = '20mc1066@mitsgwl.ac.in'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = '20cs1107@mitsgwl.ac.in'
+EMAIL_HOST_PASSWORD = 'oqweiurmcywybeft'

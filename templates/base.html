@@ -31,20 +31,45 @@
       <div class="pt-5 position-sticky">
         <div class="list-group list-group-flush mx-3 mt-4 ">
           {% if u.is_authenticated %}
-          <a href="/showcolleges" class="bg-transparent list-group-item list-group-item-action py-2 ripple"
+          <a href="/showcolleges" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/showcolleges' %}active{% endif %}"
             aria-current="true">
             <i class="fas fa-building fa-fw me-3"></i><span>Show Colleges</span>
           </a>
-          <a href="/editprofile" class="bg-transparent list-group-item list-group-item-action py-2 ripple ">
+          <a href="/addcollege" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/addcollege' %}active{% endif %}"
+            aria-current="true">
+            <i class="fas fa-building fa-fw"></i><i class="fa fa-plus fa-fw me-3" aria-hidden="true"></i><span>Add College</span>
+          </a>
+          <a href="/inactivecolleges" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/inactivecolleges' %}active{% endif %}"
+            aria-current="true">
+            <i class="fa fa-trash fa-fw me-3" aria-hidden="true"></i><span>Inactive Colleges</span>
+          </a>
+
+          <a href="/massmail" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/massmail' %}active{% endif %}"
+            aria-current="true">
+            <i class="fa fa-envelope fa-fw me-3" aria-hidden="true"></i><span>Mass Mail</span>
+          </a>
+
+          <a href="/masssms" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/masssms' %}active{% endif %}"
+            aria-current="true">
+            <i class="fas fa-sms fa-fw me-3" aria-hidden="true"></i><span>Mass SMS</span>
+          </a>
+          
+          <a href="/showfollowup" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/showfollowup' %}active{% endif %}"
+            aria-current="true">
+            <i class="fas fa-comment fa-fw me-3"></i><span>Show Followups</span>
+          </a>
+          <a href="/editprofile" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/editprofile' %}active{% endif %}">
             <i class="fas fa-user-alt fa-fw me-3"></i><span>My Profile</span>
           </a>
-          <a href="/changepassword" class="bg-transparent list-group-item list-group-item-action py-2 ripple"><i
+          <a href="/changepassword" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/changepassword' %}active{% endif %}"><i
               class="fas fa-lock fa-fw me-3"></i><span>Password</span></a>
           <a href="/logout" class="bg-transparent list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-door-open fa-fw me-3"></i><span>Logout</span></a>
           {% if u.is_staff %}
-          <a href="/register" class="bg-transparent list-group-item list-group-item-action py-2 ripple ">
-            <i class="fas fa-user-alt fa-fw me-3"></i><span>Make Employee</span>
+          <a href="/register" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/register' %}active{% endif %}">
+            <i class="fas fa-user-plus fa-fw me-3"></i><span>Make Employee</span>
+            <a href="/allemployee" class="bg-transparent list-group-item list-group-item-action py-2 ripple {% if request.path == '/allemployee' %}active{% endif %}">
+              <i class="fas fa-users fa-fw me-3"></i><span>All Employees</span>
             {% endif %}
           
           {% else %}
@@ -181,6 +206,7 @@
   <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/multiselect-dropdown.js' %}"></script>
   <!-- Custom scripts -->
   <script type="text/javascript"></script>
 </body>

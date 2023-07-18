@@ -5,6 +5,15 @@
 
 <!--Main layout-->
 <main style="margin-top: 110px">
+  {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+      <ul class="messages bg-success text-light alert alert-success" role='success'>
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      </ul>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-xl-6">
@@ -27,19 +36,29 @@
                 </div>
               </div>
               <div class="col-md-6 mb-4">
-                <div class="form-outline">
-                  <input type="text" name="name" id="form3Example1n" value="{{user.last_name}}"
-                    class="form-control form-control-lg" required />
-                  <label class="form-label" for="form3Example1n">Full Name</label>
+                <div class="form-outline mb-4">
+                  <input type="text" name="email" id="form3Example97" class="form-control form-control-lg" required />
+                  <label class="form-label" for="form3Example97">Email ID</label>
                 </div>
               </div>
             </div>
 
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.tags == 'warning' %}
+            <ul class="messages bg-danger text-light alert alert-warning" role='alert'>
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            </ul>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+
             <div class="row">
               <div class="col-md-6 mb-4">
-                <div class="form-outline mb-4">
-                  <input type="text" name="email" id="form3Example97" class="form-control form-control-lg" required />
-                  <label class="form-label" for="form3Example97">Email ID</label>
+                <div class="form-outline">
+                  <input type="text" name="name" id="form3Example1n" value="{{user.last_name}}"
+                    class="form-control form-control-lg" required />
+                  <label class="form-label" for="form3Example1n">Full Name</label>
                 </div>
               </div>
 
@@ -52,6 +71,7 @@
               </div>
             </div>
 
+            <div class="row">
             <div class="col-md-6 mb-4">
               <div class="form-outline">
                 <input type="text" name="fathername" id="form3Example1n1" class="form-control form-control-lg"
@@ -61,7 +81,17 @@
             </div>
 
             <div class="col-md-6 mb-4">
-              <label class="form-label" for="form3Example1n1">Select Your Gender</label>
+              <div class="form-outline">
+                <input type="number" name="aadhar" id="form3Example1n1" class="form-control form-control-lg"
+                  title="Please, Enter Valid Aadhar Number." pattern="[1-9]{1}[0-9]{11}" required />
+                <label class="form-label" for="form3Example1n1">Aadhar Number</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label class="form-label" for="form3Example1n1">Select Gender</label>
               <select name="gender" placeholder="Gender"
                 class="form-control select-input placeholder-active active focused" required>
                 <option value="Others">Others</option>
@@ -71,12 +101,16 @@
             </div>
 
             <div class="col-md-6 mb-4">
-              <div class="form-outline">
-                <input type="number" name="aadhar" id="form3Example1n1" class="form-control form-control-lg"
-                  title="Please, Enter Valid Aadhar Number." pattern="[1-9]{1}[0-9]{11}" required />
-                <label class="form-label" for="form3Example1n1">Aadhar Number</label>
-              </div>
+              <label class="form-label" for="form3Example1n1">Select Role</label>
+              <select name="role" placeholder="Role"
+                class="form-control select-input placeholder-active active focused" required>
+                <option value="Employee">Employee</option>
+                <option value="Staff">Staff</option>
+              </select>
             </div>
+          </div>
+
+            
 
 
 
@@ -86,9 +120,8 @@
                   aria-expanded="false">
                   <label class="form-label" for="form3Example1n1">Select the States</label>
                 </button>
-                <ul class="dropdown-menu" style="height:300px; overflow-y:auto;" aria-labelledby="dropdownMenuButton">
+                <ul class="dropdown-menu" style="height:300px; width:300px; overflow-y:auto;" aria-labelledby="dropdownMenuButton">
                   {% for s in states %}
-                  <li>
                     <a class="dropdown-item" href="#">
                       <div class="form-check">
                         <input class="form-check-input" name="selectedstates" type="checkbox" value="{{s.state}}"
@@ -96,7 +129,6 @@
                         <label class="form-check-label" for="Checkme1">{{s.state}}</label>
                       </div>
                     </a>
-                  </li>
                   {% endfor %}
                 </ul>
               </div>

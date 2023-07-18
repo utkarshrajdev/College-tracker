@@ -28,7 +28,7 @@
           </li>
           {% endif %}
         </ul>
-        <form class="d-flex pe-2" role="search" action="{% url 'showcolleges' %}" method="get">
+        <form class="d-flex pe-2" role="search" action="{% url 'showfollowup' %}" method="get">
           {% csrf_token %}
           <input class="form-control me-2" type="text" name="p" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
@@ -39,47 +39,37 @@
       <thead>
         <tr>
           <th scope="col">College Name</th>
-          <th scope="col">City</th>
-          <th scope="col">State</th>
-          <th scope="col">Phone</th>
-          <th scope="col">E-Mail</th>
-          <th scope="col">Website</th>
-          <th scope="col">Category</th>
-          <th scope="col">Course</th>
           <th scope="col">Follow Up</th>
+          <th scope="col">Employee</th>
+          <th scope="col">Details</th>
           <th scope="col">Edit Details</th>
         </tr>
       </thead>
       <tbody>
-        {% for c in page.object_list %}
+        {% for f in page.object_list %}
         <tr>
-          <td>{{c.name}}</td>
-          <td>{{c.city}}</td>
-          <td>{{c.state}}</td>
-          <td>{{c.phone}}</td>
-          <td>{{c.email}}</td>
-          <td>{{c.website}}</td>
-          <td>{{c.category}}</td>
-          <td>{{c.courses}}</td>
+          <td>{{f.collegename}}</td>
+          <td>{{f.message}}</td>
+          <td>{{f.employee}}</td>
           <td><!-- Button trigger modal -->
             <button type="button" class="btn btn-danger" data-mdb-toggle="modal"
-              data-mdb-target="#followupModal{{c.id}}">
-              Follow Up
+              data-mdb-target="#followupModal{{f.collegeid}}">
+              Details
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="followupModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="followupModal{{f.collegeid}}" tabindex="-1" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Follow Up - {{c.name}}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Follow Up - {{f.collegename}}</h5>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body overflow-auto" style="position: relative; height: 400px">
                     <form action="/savefollowup" method="POST">
                       {% csrf_token %}
                       {% for each in followup %}
-                      {% if each.collegeid == c.id%}
+                      {% if each.collegeid == f.collegeid%}
                       <div class="divider d-flex align-items-center mb-4">
                         <p class="text-center mx-3 mb-0" style="color: #a2aab7;">{{each.date}} - {{each.time}}</p>
                       </div>
@@ -93,13 +83,12 @@
                       {% endif %}
                       {% endfor %}
                   </div>
-                  
                   <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
                       alt="avatar 3" style="width: 40px; height: 100%;">
                     <input type="text" name='message' class="form-control form-control-lg" id="exampleFormControlInput1"
                       placeholder="Type message" />
-                    <input type="integer" name='collegeid' value={{c.id}} class="form-control form-control-lg"
+                    <input type="integer" name='collegeid' value={{f.collegeid}} class="form-control form-control-lg"
                       id="exampleFormControlInput1" placeholder="Type message" hidden />
                     <button class="btn btn-transparent" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
                   </div>
@@ -110,49 +99,52 @@
           </td>
           <td><!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-mdb-toggle="modal"
-              data-mdb-target="#editdetailModal{{c.id}}">
+              data-mdb-target="#editdetailModal{{f.collegeid}}">
               Edit Details
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="editdetailModal{{c.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="editdetailModal{{f.collegeid}}" tabindex="-1" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{c.name}}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{f.collegename}}</h5>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <form action="/editcollegedetails" method="POST">
                       {% csrf_token %}
+                      
+                      {% for each in colleges %}
+                      {% if each.id == f.collegeid%}
                       <div class="form-outline mb-4">
-                        <input type="text" name="id" value="{{c.id}}" id="form5Example1" class="form-control"
+                        <input type="text" name="id" value="{{each.id}}" id="form5Example1" class="form-control"
                           readonly />
                         <label class="form-label" for="form5Example1">College Id</label>
                       </div>
                       <div class="form-outline mb-4">
-                        <input type="text" name="name" value="{{c.name}}" id="form5Example1" class="form-control" />
+                        <input type="text" name="name" value="{{each.name}}" id="form5Example1" class="form-control" />
                         <label class="form-label" for="form5Example1">College Name</label>
                       </div>
                       <div class="form-outline mb-4">
-                        <input type="text" name="city" value="{{c.city}}" id="form5Example1" class="form-control" />
+                        <input type="text" name="city" value="{{each.city}}" id="form5Example1" class="form-control" />
                         <label class="form-label" for="form5Example1">City</label>
                       </div>
                       <div class="form-outline mb-4">
-                        <input type="text" name="state" value="{{c.state}}" id="form5Example1" class="form-control"
+                        <input type="text" name="state" value="{{each.state}}" id="form5Example1" class="form-control"
                           readonly />
                         <label class="form-label" for="form5Example1">State</label>
                       </div>
                       <div class="form-outline mb-4">
-                        <input type="text" name="phone" value="{{c.phone}}" id="form5Example1" class="form-control" />
+                        <input type="text" name="phone" value="{{each.phone}}" id="form5Example1" class="form-control" />
                         <label class="form-label" for="form5Example1">Phone</label>
                       </div>
                       <div class="form-outline mb-4">
-                        <input type="text" id="form5Example2" name="email" value="{{c.email}}" class="form-control" />
+                        <input type="text" id="form5Example2" name="email" value="{{each.email}}" class="form-control" />
                         <label class="form-label" for="form5Example2">Email address</label>
                       </div>
                       <div class="form-outline mb-4">
-                        <input type="text" id="form5Example2" name="website" value="{{c.website}}"
+                        <input type="text" id="form5Example2" name="website" value="{{each.website}}"
                           class="form-control" />
                         <label class="form-label" for="form5Example2">Website</label>
                       </div>
@@ -193,7 +185,6 @@
                           </ul>
                         </div>
                       </div>
-                      <br>
 
                       <div class="col-md-6 mb-4">
                         <label class="form-label" for="form3Example1n1">Change Status</label>
@@ -203,7 +194,9 @@
                           <option value="inactive">Inactive</option>
                         </select>
                       </div>
-
+                      {% endif %}
+                      {% endfor %}
+                      <br>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
                         <input class="btn btn-primary" type="submit" value="Save Changes" />
